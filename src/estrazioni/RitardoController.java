@@ -25,7 +25,23 @@ public class RitardoController {
 		super();
 		this.storico = EstrazioneController.sortFromRecent(estrazioni);
 	}
+	
+	public static int ritardoMassimoCombinazioneRuota(RuotaID id, Combinazione comb){
+		
+	}
 
+	public static int ritardoMassimoCombinazioneTutte(Combinazione comb){
+		
+	}
+	
+	public static int ritardoPrecedenteCombinazioneRuota(RuotaID id, Combinazione comb){
+		
+	}
+	
+	public static int ritardoPrecedenteCombinazioneTutte(Combinazione comb){
+		
+	}
+	
 	public int getRitardoCombinazioneSuRuota(RuotaID id, Combinazione comb){
 		int count = 0;
 
@@ -56,8 +72,8 @@ public class RitardoController {
 	 * @param len
 	 * @return
 	 */
-	public LinkedHashMap<Numero, Integer> piuRitardatariPerRuota(RuotaID id, int len){
-		if ( len < 1 ) return new LinkedHashMap<>();
+	public LinkedHashMap<Numero, Integer> piuRitardatariPerRuota(RuotaID id, int limit){
+		if ( limit < 1 ) return new LinkedHashMap<>();
 
 		Map<Numero,Integer> map = new HashMap<>();
 
@@ -66,7 +82,7 @@ public class RitardoController {
 			map.put(numero,ritardo);
 		}
 
-		return CollectionHelper.sortAmboHashMapByIntegerValue(map, len, true);
+		return CollectionHelper.sortAmboHashMapByIntegerValue(map, limit, true);
 
 	}
 
@@ -77,8 +93,8 @@ public class RitardoController {
 	 * @param len
 	 * @return
 	 */
-	public LinkedHashMap<Numero, Integer> piuRitardatariPerTutte(int len){
-		if ( len < 1 ) return new LinkedHashMap<>();
+	public LinkedHashMap<Numero, Integer> piuRitardatariPerTutte(int limit){
+		if ( limit < 1 ) return new LinkedHashMap<>();
 
 		Map<Numero,Integer> map = new HashMap<>();
 
@@ -87,7 +103,7 @@ public class RitardoController {
 			map.put(numero,ritardo);
 		}
 
-		return CollectionHelper.sortAmboHashMapByIntegerValue(map, len, true);
+		return CollectionHelper.sortAmboHashMapByIntegerValue(map, limit, true);
 
 	}
 
@@ -98,8 +114,8 @@ public class RitardoController {
 	 * @param len
 	 * @return
 	 */
-	public LinkedHashMap<NumeroRuota, Integer> piuRitardatariAssoluti(int len){
-		if ( len < 1 ) return new LinkedHashMap<>();
+	public LinkedHashMap<NumeroRuota, Integer> piuRitardatariAssoluti(int limit){
+		if ( limit < 1 ) return new LinkedHashMap<>();
 
 		Map<NumeroRuota,Integer> map = new HashMap<>();
 
@@ -112,12 +128,12 @@ public class RitardoController {
 
 		}
 
-		return CollectionHelper.sortAmboHashMapByIntegerValue(map, len, true);
+		return CollectionHelper.sortAmboHashMapByIntegerValue(map, limit, true);
 
 	}
 
 	@SuppressWarnings("unchecked")
-	public LinkedHashMap<Ambo, Integer> ambiPiuRitardatari(RuotaID id, int len){
+	public LinkedHashMap<Ambo, Integer> ambiPiuRitardatari(RuotaID id, int limit){
 		
 		Map<Ambo,Integer> amboMap = new HashMap<>();
 		int i = 0;
@@ -142,51 +158,21 @@ public class RitardoController {
 			}
 		}
 
-		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, len, true);
+		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, limit, true);
 
 	}
 	
-	public LinkedHashMap<Combinazione, Integer> combPiuRitardatarie(RuotaID id, int limit, int combLen){
-		
-		Map<Combinazione,Integer> combMap = new HashMap<>();
-		int i = 0;
-		
-		while(combMap.size() <= 4005 && i < storico.size() ){
-			Estrazione estrazione = storico.get(i);
-			Ruota ruota = estrazione.getRuota(id);
-			List<? extends Combinazione> combInRuota = RuotaController.getPermutazioneCombinazione(ruota, 2);
-
-			for ( Combinazione ambo: combInRuota ){
-				Integer ritardo = combMap.get(ambo);
-				if ( ritardo == null ){
-					combMap.put(ambo, i);
-				}
-			}
-			i++;
-		}
-		
-		//controlla se di default puoi assegnare qualcosa
-		for ( Ambo ambo: NumeroController.generaAmbi() ){
-			if ( combMap.get(ambo) == null ){
-				combMap.put(ambo, storico.size());
-			}
-		}
-
-		return CollectionHelper.sortAmboHashMapByIntegerValue(combMap, limit, true);
-
-	}
-	
-	public LinkedHashMap<Ambo, Integer> ambiPiuRitardatariBis(RuotaID id, int len){
+	public LinkedHashMap<Ambo, Integer> ambiPiuRitardatariBis(RuotaID id, int limit){
 		Map<Ambo,Integer> amboMap = new HashMap<>();
 		for ( Ambo ambo: NumeroController.generaAmbi() ){
 			int rit = getRitardoCombinazioneSuRuota(id, ambo);
 			amboMap.put(ambo,rit);
 		}
-		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, len, true);
+		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, limit, true);
 
 	}
 	
-	public LinkedHashMap<Ambo, Integer> ambiPiuRitardatariConCapogioco(RuotaID id, int len){
+	public LinkedHashMap<Ambo, Integer> ambiPiuRitardatariConCapogioco(RuotaID id, int limit){
 		//get capogioco, cioè massimo ritardatario per una ruota
 		List<Numero> keyList = new ArrayList<>(this.piuRitardatariPerRuota(id, 1).keySet());
 		Numero n = keyList.get(0);
@@ -197,7 +183,7 @@ public class RitardoController {
 			int rit = getRitardoCombinazioneSuRuota(id, ambo);
 			amboMap.put(ambo,rit);
 		}
-		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, len, true);
+		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, limit, true);
 	}
 
 }

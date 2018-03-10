@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import numeri.Combinazione;
+import numeri.TipoCombinazione;
 import ruote.Ruota;
 import ruote.RuotaController;
 import ruote.RuotaID;
@@ -43,12 +44,12 @@ public class FrequenzaController {
 		return count;
 	}
 	
-	public LinkedHashMap<Combinazione,Integer> combinazioniPiuFrequenti(RuotaID id, int limit, int combLen){
+	public LinkedHashMap<Combinazione,Integer> combinazioniPiuFrequenti(RuotaID id, int limit, TipoCombinazione tipo){
 		Map<Combinazione, Integer> combMap = new HashMap<>();
 		
 		for ( Estrazione e: storico ){
 			Ruota r = e.getRuota(id);
-			List<? extends Combinazione> combInRuota = RuotaController.getPermutazioneCombinazione(r, combLen);
+			List<? extends Combinazione> combInRuota = RuotaController.getPermutazioneCombinazione(r, tipo.len());
 			for ( Combinazione combinazione: combInRuota ){
 				Integer freq = combMap.get(combinazione);
 				if ( freq == null ){
