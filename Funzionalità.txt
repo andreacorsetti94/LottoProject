@@ -1,0 +1,19 @@
+- Storico estrazioni
+- Tabellone Ritardatari, (ritardatari per ogni ruota)
+- Ricerca Statistica per un numero su una ruota (8 a venezia uscito più spesso di quanto dovrebbe..)
+- Numeri spia per ogni ritardatario (considerate le ultime 100 uscite del ritardatario e un ciclo di 6 estrazioni precedenti a ogni uscita.??
+
+Tutte - ritardatari:
+- Ambata (primi 5 su tutte), con ritardo e # di volte uscito. Poi, per ogni ruota, ritardo su ruota e # di volte uscito su ruota.
+- Ambi secchi, come sopra
+- Terzine, quartine e cinquine (per ambo al loro interno), come sopra.
+
+Frequenza per ogni singola ruota ( i 10 più frequenti nelle ultime 270 estrazioni.)
+
+Gruppi (figure(1-54-23-32-37-65,ecc), decine(51-53-55-52,ecc), cadenze(2-12-22-32-42...) e consecutivi(1-2-3-4-5), radicali (1-10-11-19, 8-80-88-89, ecc.) con ambi, terzine, quartine, cinquine sestine e settine (per ambo) più ritardatari.
+
+Numeri buoni: per ogni ruota scegli un'ambata e 6 numeri per gli abbinamenti. C'è un ciclo di validità al termine del quale i numeri buoni.
+
+Tutto sui ritardi:
+- per ogni numero (1..90), per ogni ruota(BA-NZ, TT), il numero di ritardo.
+...E frequenze assolute in totale e nelle ultime 180 estrazioni
