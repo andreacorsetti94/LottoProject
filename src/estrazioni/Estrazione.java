@@ -100,5 +100,31 @@ public class Estrazione {
 	public boolean isInAnno(int year){
 		return this.getDate().get(Calendar.YEAR) == year;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Estrazione other = (Estrazione) obj;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} 
+		
+		if ( other.getDate().compareTo(this.getDate()) != 0) return false;
+		return true;
+	}
 		
 }

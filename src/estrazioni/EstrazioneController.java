@@ -92,7 +92,23 @@ public class EstrazioneController {
 	}
 	
 	static {
-		EstrazioneFetcher fetcher = new EstrazioneFetcher();
-		STORICO_ESTRAZIONI = fetcher.fetchCompleteList();
+		STORICO_ESTRAZIONI = EstrazioneFetcher.fetchCompleteList();
+	}
+	
+	static void appendEstrazioniToPresent(List<Estrazione> nuoveEstrazioni){
+		
+		Estrazione tmpLast = fetchSortedEstrFromOldest().get(STORICO_ESTRAZIONI.size() - 1);
+		for ( Estrazione e: nuoveEstrazioni ){
+			if ( tmpLast.getDate().get(Calendar.YEAR) != e.getDate().get(Calendar.YEAR) ){
+				e.setNumeroAnnuale(1);
+			}
+			else{
+				e.setNumeroAnnuale(tmpLast.getNumeroAnnuale() + 1);
+			}
+			tmpLast = e;
+			STORICO_ESTRAZIONI.add(e);
+		}
+		
+		System.out.println("Aggiunte " + nuoveEstrazioni.size() + " estrazioni.");
 	}
 }

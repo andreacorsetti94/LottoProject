@@ -12,7 +12,7 @@ public class LocalConfigurationManager {
 	private static Properties confProperties;
 	private static final String LOCAL_STORICO_FILE = "TRUE_storico.txt";
 	private static final String TMP_STORICO_ZIP = "tmp.zip";
-	private static final String TMP_STORICO_FILE = "tmp.txt";
+	private static final String TMP_STORICO_FILE = "storico.txt";
 	
 	private static List<String> storicoLines;
 	
@@ -48,10 +48,10 @@ public class LocalConfigurationManager {
 			Unzipper.unzip(TMP_STORICO_ZIP, "/"); //puts in resources
 
 			List<String> newLines = FileManager.fetchLastLines(TMP_STORICO_FILE);
-			StoricoManager.addLinesToStorico(newLines);
+			StoricoManager.updateEstrazioni(newLines);
+			FileManager.appendLinesToFile(newLines, LOCAL_STORICO_FILE);
 			FileManager.deleteFile(TMP_STORICO_FILE);
 			FileManager.deleteFile(TMP_STORICO_ZIP);
-			FileManager.deleteFile("storico.txt");
 			
 
 		}

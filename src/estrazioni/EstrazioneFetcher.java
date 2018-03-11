@@ -15,7 +15,7 @@ import ruote.RuotaID;
  * @author andy
  *
  */
-public class EstrazioneFetcher {
+class EstrazioneFetcher {
 
 	private static final String DATE_FORMAT = "yyyy/MM/dd";
 
@@ -25,14 +25,14 @@ public class EstrazioneFetcher {
 
 	 * @return
 	 */
-	public List<Estrazione> fetchCompleteList(){
+	static List<Estrazione> fetchCompleteList(){
 
 		List<String> lines = StoricoManager.getStoricoLines();
-		return this.retrieveEstrazioni(lines);
+		return EstrazioneFetcher.retrieveEstrazioni(lines);
 		
 	}
 	
-	private List<Estrazione> retrieveEstrazioni(List<String> inputLines){
+	static List<Estrazione> retrieveEstrazioni(List<String> inputLines){
 		Stack<Estrazione> stack = new Stack<>();
 
 		Estrazione estrazioneCorrente = null;
@@ -40,11 +40,12 @@ public class EstrazioneFetcher {
 		int annualCounter = 1;		//necessary for setting annual counter
 		for ( String line: inputLines ){
 			
+			if (line.trim().isEmpty() ) continue;
 			String[] linefields = line.split("\\s+");
 
 			Calendar date = DateHelper.fetchCalendarDate(DATE_FORMAT, linefields[0]);
 			
-			if ( this.nuovaEstrazioneNecessaria(stack, date) ){
+			if ( EstrazioneFetcher.nuovaEstrazioneNecessaria(stack, date) ){
 				if ( date.get(Calendar.YEAR) == current_year ){
 					annualCounter++;			//necessary for setting annual counter
 				}
@@ -62,7 +63,7 @@ public class EstrazioneFetcher {
 
 			RuotaID id = RuotaHelper.fetchIdFromString(linefields[1]);
 			
-			estrazioneCorrente.getRuota(id).popolaRuota(this.fetchNumeriRuota(linefields[2], 
+			estrazioneCorrente.getRuota(id).popolaRuota(EstrazioneFetcher.fetchNumeriRuota(linefields[2], 
 					linefields[3], linefields[4], linefields[5], linefields[6]));
 		}
 		
@@ -75,7 +76,7 @@ public class EstrazioneFetcher {
 	 * @param line
 	 * @return
 	 */
-	private List<Numero> fetchNumeriRuota(String... line){
+	private static List<Numero> fetchNumeriRuota(String... line){
 
 		int len = 5;
 		Numero[] numeri = new Numero[len];
@@ -100,7 +101,7 @@ public class EstrazioneFetcher {
 	 * @param data
 	 * @return
 	 */
-	private boolean nuovaEstrazioneNecessaria(Stack<Estrazione> stack, Calendar data){
+	private static boolean nuovaEstrazioneNecessaria(Stack<Estrazione> stack, Calendar data){
 		if ( stack.isEmpty() ) return true;
 		
 		Estrazione prec = stack.peek();

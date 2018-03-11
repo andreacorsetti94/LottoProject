@@ -1,9 +1,12 @@
 package iofetch;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -181,5 +184,19 @@ class FileManager {
 		
 		sm_confEnvPath = absolutePath;
 
+	}
+	
+	static void appendLinesToFile(List<String> lines, String filePath){
+		
+		try{
+			Writer output = new BufferedWriter(new FileWriter(FileManager.retrieveFile(filePath), true));
+			for ( String line: lines ){
+				output.append("\n" + line);
+			}
+			output.close();
+		}
+		catch ( IOException e){
+			System.err.println("CANNOT UPDATE FILE: " + filePath + "\n" + e.getMessage());
+		}
 	}
 }
