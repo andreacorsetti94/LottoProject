@@ -45,19 +45,131 @@ public class RitardoController {
 		return max;
 	}
 
-	public static int ritardoMassimoCombinazioneTutte(Combinazione comb){
+	public int ritardoMassimoCombinazioneTutte(Combinazione comb){
+		int max = 0;
+		int tmp = 0;
 		
+		for ( Estrazione estrazione: storico){
+			boolean estrazioneContieneComb = false;
+			for ( Ruota ruota: estrazione.getRuote() ){
+				if ( ruota.containsCombinazione(comb) ){
+					if ( tmp > max ){
+						max = tmp;
+					}
+					tmp = 0;
+					estrazioneContieneComb = true;
+					break;
+				}
+			}
+			if ( !estrazioneContieneComb ){
+				tmp++;
+			}
+			
+		}
+		return max;
 	}
 	
-	public static int ritardoPrecedenteCombinazioneRuota(RuotaID id, Combinazione comb){
+	public int ritardoPrecedenteCombinazioneRuota(RuotaID id, Combinazione comb){
+		int countEstrazioneDaCuiPartire = 0;
+				
+		for ( int i = 0; i < storico.size(); i++ ){
+			Estrazione e = storico.get(i);
+			if ( e.getRuota(id).containsCombinazione(comb) ){
+				countEstrazioneDaCuiPartire = i + 1;
+				break;
+			}
+		}
 		
+		int countRitardo = 0;
+		for ( int j = countEstrazioneDaCuiPartire; j < storico.size(); j++ ){
+			Estrazione e = storico.get(j);
+			if ( e.getRuota(id).containsCombinazione(comb) ){
+				return countRitardo;
+			}
+			countRitardo++;
+		}
+		return countRitardo;
 	}
 	
-	public static int ritardoPrecedenteCombinazioneTutte(Combinazione comb){
+	public int ritardoPrecedenteCombinazioneTutte(Combinazione comb){
+		int countEstrazioneDaCuiPartire = 0;
 		
+		outer: for ( int i = 0; i < storico.size(); i++ ){
+			Estrazione e = storico.get(i);
+			for ( Ruota ruota: e.getRuote() ){
+				if (ruota.containsCombinazione(comb) ){
+					countEstrazioneDaCuiPartire = i + 1;
+					break outer;
+				}
+			}
+		}
+		
+		int countRitardo = 0;
+		for ( int j = countEstrazioneDaCuiPartire; j < storico.size(); j++ ){
+			Estrazione e = storico.get(j);
+			for ( Ruota ruota: e.getRuote() ){
+				if (ruota.containsCombinazione(comb) ){
+					return countRitardo;
+				}
+			}
+			countRitardo++;
+		}
+		return countRitardo;
 	}
 	
-	public int getRitardoCombinazioneSuRuota(RuotaID id, Combinazione comb){
+	public int ritardoMedioRuota(RuotaID id, Combinazione comb){
+		
+		//somma ritardi temporanei (compreso attuale) / (numero volte estratto + 1)
+		int numeroEstrazioni = 0;
+		int sommaRitardiTemporanei = 0;
+		int tmpRitardo = 0;
+		
+		for ( Estrazione e: storico ){
+			if ( e.getRuota(id).containsCombinazione(comb) ){
+				sommaRitardiTemporanei += tmpRitardo;
+				tmpRitardo = 0;
+				numeroEstrazioni++;
+			}
+			else{
+				tmpRitardo++;
+			}
+		}
+		
+		//includere ritardo attuale
+		sommaRitardiTemporanei += tmpRitardo;
+		return (int) sommaRitardiTemporanei/(numeroEstrazioni + 1);
+	}
+	
+	public int ritardoMedioTutte(Combinazione comb){
+		
+		//somma ritardi temporanei (compreso attuale) / (numero volte estratto + 1)
+		int numeroEstrazioni = 0;
+		int sommaRitardiTemporanei = 0;
+		int tmpRitardo = 0;
+		
+		for ( Estrazione e: storico ){
+			boolean flag = false;
+			for ( Ruota ruota: e.getRuote() ){
+				if ( ruota.containsCombinazione(comb) ){
+					sommaRitardiTemporanei += tmpRitardo;
+					tmpRitardo = 0;
+					numeroEstrazioni++;
+					flag = true;
+					break;
+				}
+			}
+			if ( !flag ){
+				tmpRitardo++;
+			}
+		}
+		
+		//includere ritardo attuale
+		sommaRitardiTemporanei += tmpRitardo;
+		return (int) sommaRitardiTemporanei/(numeroEstrazioni + 1);
+	}
+	
+	
+	public int ritardoCombinazioneRuota(RuotaID id, Combinazione comb){
 		int count = 0;
 
 		for ( Estrazione estrazione: storico){
@@ -67,7 +179,7 @@ public class RitardoController {
 		return count;
 	}
 
-	public int getRitardoCombinazioneSuTutte(Combinazione comb){
+	public int ritardoCombinazioneTutte(Combinazione comb){
 		int count = 0;
 
 		outer_loop: for (Estrazione estrazione: storico){
@@ -93,7 +205,7 @@ public class RitardoController {
 		Map<Numero,Integer> map = new HashMap<>();
 
 		for ( Numero numero: NumeroController.getInsiemeNumeri() ){
-			int ritardo = getRitardoCombinazioneSuRuota(id, numero);
+			int ritardo = ritardoCombinazioneRuota(id, numero);
 			map.put(numero,ritardo);
 		}
 
@@ -114,7 +226,7 @@ public class RitardoController {
 		Map<Numero,Integer> map = new HashMap<>();
 
 		for ( Numero numero: NumeroController.getInsiemeNumeri() ){
-			int ritardo = getRitardoCombinazioneSuTutte(numero);
+			int ritardo = ritardoCombinazioneTutte(numero);
 			map.put(numero,ritardo);
 		}
 
@@ -137,7 +249,7 @@ public class RitardoController {
 		for ( Numero numero: NumeroController.getInsiemeNumeri() ){
 			for ( RuotaID id: RuotaID.values() ){
 				NumeroRuota nr = new NumeroRuota(numero, id);
-				int ritardo = getRitardoCombinazioneSuRuota(id,numero);
+				int ritardo = ritardoCombinazioneRuota(id,numero);
 				map.put(nr,ritardo);
 			}
 
@@ -180,7 +292,7 @@ public class RitardoController {
 	public LinkedHashMap<Ambo, Integer> ambiPiuRitardatariBis(RuotaID id, int limit){
 		Map<Ambo,Integer> amboMap = new HashMap<>();
 		for ( Ambo ambo: NumeroController.generaAmbi() ){
-			int rit = getRitardoCombinazioneSuRuota(id, ambo);
+			int rit = ritardoCombinazioneRuota(id, ambo);
 			amboMap.put(ambo,rit);
 		}
 		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, limit, true);
@@ -195,7 +307,7 @@ public class RitardoController {
 		List<Ambo> ambi = NumeroController.generaAmbiConCapogioco(n);
 		Map<Ambo,Integer> amboMap = new HashMap<>();
 		for ( Ambo ambo: ambi ){
-			int rit = getRitardoCombinazioneSuRuota(id, ambo);
+			int rit = ritardoCombinazioneRuota(id, ambo);
 			amboMap.put(ambo,rit);
 		}
 		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, limit, true);
