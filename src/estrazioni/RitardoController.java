@@ -26,8 +26,23 @@ public class RitardoController {
 		this.storico = EstrazioneController.sortFromRecent(estrazioni);
 	}
 	
-	public static int ritardoMassimoCombinazioneRuota(RuotaID id, Combinazione comb){
+	public int ritardoMassimoCombinazioneRuota(RuotaID id, Combinazione comb){
+		int max = 0;
+		int tmp = 0;
 		
+		for ( Estrazione estrazione: storico){
+			if (estrazione.getRuota(id).containsCombinazione(comb)){
+				if ( tmp > max ){
+					max = tmp;
+				}
+				tmp = 0;
+			}
+			else{
+				tmp++;
+			}
+			
+		}
+		return max;
 	}
 
 	public static int ritardoMassimoCombinazioneTutte(Combinazione comb){
