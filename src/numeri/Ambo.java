@@ -47,7 +47,8 @@ public class Ambo extends Combinazione {
 	public boolean isVertibile(){
 		String val1 = String.valueOf(this.primo.value());
 		String val2 = String.valueOf(this.secondo.value());
-		if ( val1.length() != val2.length() ) return false;
+		
+		if ( val1.length() != val2.length() || val1.length() < 2 || val2.length() < 2) return false;
 		
 		return val1.charAt(0) == val2.charAt(1) && val2.charAt(0) == val1.charAt(1);
 		

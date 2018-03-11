@@ -2,7 +2,12 @@ package numeri;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+
+import estrazioni.EstrazioneController;
+import estrazioni.RitardoController;
+import ruote.RuotaID;
 
 public class NumeroController {
 
@@ -30,7 +35,7 @@ public class NumeroController {
 		return ambi;
 	}
 	
-	public static List<Ambo> generaAmbiConCapogioco(Numero numero){
+	public static List<Ambo> generaAmbiAPartireDaNumero(Numero numero){
 		List<Ambo> ambi = new ArrayList<>();
 		for(int i = 1; i <= 90; i++){
 			if ( numero.value() != i ){
@@ -38,6 +43,17 @@ public class NumeroController {
 			}
 		}
 		return ambi;
+	}
+	
+	public static List<Ambo> generaAmbiDaCapogioco(RuotaID id){
+	
+		LinkedHashMap<Numero, Integer> map = new RitardoController(EstrazioneController.retrieveListEstrazioni()).
+					piuRitardatariPerRuota(id, 1);
+		
+		Numero capogiocoRitardatario = map.keySet().iterator().next();
+		
+
+		return generaAmbiAPartireDaNumero(capogiocoRitardatario);
 	}
 	
 	/**
@@ -271,5 +287,53 @@ public class NumeroController {
 			prec = list.get(i);
 		}
 		return false;
+	}
+	
+	public static List<Ambo> generaAmbiVertibili(){
+		List<Ambo> ambi = new ArrayList<>();
+		for( Ambo a: generaAmbi() ){
+			if ( a.isVertibile() ) ambi.add(a);
+		}
+		return ambi;
+	}
+	
+	public static List<Ambo> generaAmbiGemelli(){
+		List<Ambo> ambi = new ArrayList<>();
+		for( Ambo a: generaAmbi() ){
+			if ( a.isGemello() ) ambi.add(a);
+		}
+		return ambi;
+	}
+	
+	public static List<Ambo> generaAmbiSimmetrici(){
+		List<Ambo> ambi = new ArrayList<>();
+		for( Ambo a: generaAmbi() ){
+			if ( a.isSimmetrico()) ambi.add(a);
+		}
+		return ambi;
+	}
+	
+	public static List<Ambo> generaAmbiDivisoreComune(){
+		List<Ambo> ambi = new ArrayList<>();
+		for( Ambo a: generaAmbi() ){
+			if ( a.aDivisorComune() ) ambi.add(a);
+		}
+		return ambi;
+	}
+	
+	public static List<Ambo> generaAmbiComplementari(){
+		List<Ambo> ambi = new ArrayList<>();
+		for( Ambo a: generaAmbi() ){
+			if ( a.isComplementare() ) ambi.add(a);
+		}
+		return ambi;
+	}
+
+	public static List<Ambo> generaAmbiConsecutivi(){
+		List<Ambo> ambi = new ArrayList<>();
+		for( Ambo a: generaAmbi() ){
+			if ( a.isConsecutivo() ) ambi.add(a);
+		}
+		return ambi;
 	}
 }

@@ -1,6 +1,5 @@
 package helper;
 import iofetch.LocalConfigurationManager;
-
 import estrazioni.EstrazioneController;
 import estrazioni.RitardoController;
 

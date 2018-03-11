@@ -38,7 +38,8 @@ public class FrequenzaController {
 		
 		for ( Estrazione estrazione: storico ){
 			for ( Ruota ruota: estrazione.getRuote() ){
-				if ( ruota.containsCombinazione(comb) ) count++;
+				if ( ruota.containsCombinazione(comb) && ruota.getRuota() != RuotaID.NAZIONALE) 
+					count++;
 			}
 		}
 		return count;
