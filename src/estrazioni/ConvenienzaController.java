@@ -31,4 +31,15 @@ public class ConvenienzaController {
 		return (double) freqComb/countEstrazioniValide*ritardoComb;
 	}
 	
+	public double indiceConvenienzaCombinazioneTutte(Combinazione comb){
+		RitardoController ritContr = new RitardoController(this.storico);
+		FrequenzaController freqContr = new FrequenzaController(this.storico);
+		
+		int ritardoComb = ritContr.ritardoCombinazioneTutte(comb);
+		int freqComb = freqContr.getFreqCombinazioneTutte(comb);
+		
+		int countEstrazioniValide = storico.size();
+		return (double) freqComb/countEstrazioniValide*ritardoComb;
+	}
+	
 }
