@@ -1,7 +1,9 @@
 package helper;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -25,5 +27,21 @@ public class CollectionHelper {
 						Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));;
 
 		return sorted;
+	}
+	
+	public static <K> List<K> getListFromLinkedHashMapKeys(LinkedHashMap<K,Integer> hashMap){
+		List<K> list = new ArrayList<>();
+		hashMap.forEach( (key, value) -> {
+			list.add(key);
+		});
+		return list;
+	}
+	
+	public static <K,L> List<L> getListFromLinkedHashMapValues(LinkedHashMap<K,L> hashMap){
+		List<L> list = new ArrayList<>();
+		hashMap.forEach( (key, value) -> {
+			list.add(value);
+		});
+		return list;
 	}
 }

@@ -111,4 +111,14 @@ public class EstrazioneController {
 		
 		System.out.println("Aggiunte " + nuoveEstrazioni.size() + " estrazioni.");
 	}
+	
+	public static List<Estrazione> ultimeEstrazioni(int len){
+		return EstrazioneController.fetchSortedEstrFromRecent().stream().
+				limit(len).collect(Collectors.toList());
+	}
+	
+	public static List<Estrazione> primeEstrazioni(int len){
+		return EstrazioneController.fetchSortedEstrFromOldest().stream().
+				limit(len).collect(Collectors.toList());
+	}
 }
