@@ -63,6 +63,7 @@ class EstrazioneFetcher {
 
 			RuotaID id = RuotaHelper.fetchIdFromString(linefields[1]);
 			
+			//assicurati che la ruota sia popolata in modo ordinato rispetto ai suoi numeri
 			estrazioneCorrente.getRuota(id).popolaRuota(EstrazioneFetcher.fetchNumeriRuota(linefields[2], 
 					linefields[3], linefields[4], linefields[5], linefields[6]));
 		}

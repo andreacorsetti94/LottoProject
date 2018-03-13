@@ -209,7 +209,7 @@ public class RitardoController {
 			map.put(numero,ritardo);
 		}
 
-		return CollectionHelper.sortAmboHashMapByIntegerValue(map, limit, true);
+		return CollectionHelper.sortHashMapByIntegerValue(map, limit, true);
 
 	}
 
@@ -230,7 +230,7 @@ public class RitardoController {
 			map.put(numero,ritardo);
 		}
 
-		return CollectionHelper.sortAmboHashMapByIntegerValue(map, limit, true);
+		return CollectionHelper.sortHashMapByIntegerValue(map, limit, true);
 
 	}
 
@@ -255,7 +255,7 @@ public class RitardoController {
 
 		}
 
-		return CollectionHelper.sortAmboHashMapByIntegerValue(map, limit, true);
+		return CollectionHelper.sortHashMapByIntegerValue(map, limit, true);
 
 	}
 
@@ -285,7 +285,7 @@ public class RitardoController {
 			}
 		}
 
-		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, limit, true);
+		return CollectionHelper.sortHashMapByIntegerValue(amboMap, limit, true);
 
 	}
 	
@@ -295,7 +295,7 @@ public class RitardoController {
 			int rit = ritardoCombinazioneRuota(id, ambo);
 			amboMap.put(ambo,rit);
 		}
-		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, limit, true);
+		return CollectionHelper.sortHashMapByIntegerValue(amboMap, limit, true);
 
 	}
 	
@@ -310,7 +310,7 @@ public class RitardoController {
 			int rit = ritardoCombinazioneRuota(id, ambo);
 			amboMap.put(ambo,rit);
 		}
-		return CollectionHelper.sortAmboHashMapByIntegerValue(amboMap, limit, true);
+		return CollectionHelper.sortHashMapByIntegerValue(amboMap, limit, true);
 	}
 
 }

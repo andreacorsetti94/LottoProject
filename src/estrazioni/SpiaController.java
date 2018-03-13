@@ -55,7 +55,7 @@ public class SpiaController {
 				}
 			}
 		}
-		return CollectionHelper.sortAmboHashMapByIntegerValue(spieToNumeroSpieMap, limitSpie, true);
+		return CollectionHelper.sortHashMapByIntegerValue(spieToNumeroSpieMap, limitSpie, true);
 	}
 	
 	/**

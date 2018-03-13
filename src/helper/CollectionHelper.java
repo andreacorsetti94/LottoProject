@@ -1,6 +1,7 @@
 package helper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class CollectionHelper {
 
-	public static <K> LinkedHashMap<K,Integer> sortAmboHashMapByIntegerValue(Map<K,Integer> mapToSort, int limit, boolean reverseOrder){
+	public static <K> LinkedHashMap<K,Integer> sortHashMapByIntegerValue(Map<K,Integer> mapToSort, int limit, boolean reverseOrder){
 		Comparator<Integer> comparator = null;
 		if ( reverseOrder ){
 			comparator = Comparator.reverseOrder();
@@ -44,4 +45,9 @@ public class CollectionHelper {
 		});
 		return list;
 	}
+	
+	public static <T> List<T> listFromArray(T[] array){
+		return Arrays.asList(array);
+	}
+	
 }

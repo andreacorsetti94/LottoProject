@@ -336,4 +336,24 @@ public class NumeroController {
 		}
 		return ambi;
 	}
+	
+	public static boolean isTerzinaDispari(Numero... numeri){
+		if ( numeri.length != 3) return false;
+		Numero[] ordinati = ordina(numeri);
+		Numero uno = ordinati[0];
+		Numero due = ordinati[1];
+		Numero tre = ordinati[2];
+		
+		return tre.value() - due.value() == 2 && due.value() - uno.value() == 2 && uno.value()%2 == 1; 
+	}
+	
+	public static boolean isTerzinaPari(Numero... numeri){
+		if ( numeri.length != 3) return false;
+		Numero[] ordinati = ordina(numeri);
+		Numero uno = ordinati[0];
+		Numero due = ordinati[1];
+		Numero tre = ordinati[2];
+		
+		return tre.value() - due.value() == 2 && due.value() - uno.value() == 2 && uno.value()%2 == 0; 
+	}
 }

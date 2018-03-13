@@ -1,7 +1,6 @@
 package ruote;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import numeri.Combinazione;
@@ -12,10 +11,11 @@ public class Ruota {
 	private RuotaID ruota;
 	private List<Numero> numeri = new ArrayList<>();
 	
-	public Ruota(RuotaID ruota, List<Numero> numeri){
-		this.ruota = ruota;
-		this.numeri = numeri;
-	}
+	private Numero primo;
+	private Numero secondo;
+	private Numero terzo;
+	private Numero quarto;
+	private Numero quinto;
 	
 	public Ruota(RuotaID ruota){
 		this.ruota = ruota;
@@ -72,10 +72,18 @@ public class Ruota {
 
 	public void popolaRuota(List<Numero> numeri) {
 		this.numeri = numeri;
-	}
-	
-	public void popolaRuota(Numero... numeri){
-		this.numeri = Arrays.asList(numeri);
+		
+		if ( numeri.size() != 5 ){
+			System.err.println();
+			throw new IllegalArgumentException("Size of " + this.toString() 
+					+ " is: " + numeri.size());
+		}
+		
+		this.primo = numeri.get(0);
+		this.secondo = numeri.get(1);
+		this.terzo = numeri.get(2);
+		this.quarto = numeri.get(3);
+		this.quinto = numeri.get(4);
 	}
 	
 	public Numero[] getArrayNumeri(){
@@ -83,7 +91,11 @@ public class Ruota {
 		if ( numeri.isEmpty() ){
 			return new Numero[]{};
 		}
-		return (Numero[]) this.getNumeri().toArray();
+		Numero[] numeriArray = new Numero[this.getNumeri().size()];
+		for ( int i = 0; i < this.getNumeri().size(); i++){
+			numeriArray[i] = this.getNumeri().get(i);
+		}
+		return numeriArray;
 		
 	}
 	
@@ -91,5 +103,59 @@ public class Ruota {
 		Ruota empty = new Ruota(null);
 		return empty;
 	}
+	
+	public Numero getPrimo(){
+		return this.primo;
+	}
+	
+	public Numero getSecondo(){
+		return this.secondo;
+	}
+	
+	public Numero getTerzo(){
+		return this.terzo;
+	}
+	
+	public Numero getQuarto(){
+		return this.quarto;
+	}
+	
+	public Numero getQuinto(){
+		return this.quinto;
+	}
+	
+	/**
+	 * pos varia tra 1 e 5
+	 * @param pos
+	 * @return
+	 */
+	public Numero getDeterminato(int pos){
+		if ( pos < 1 || pos > 5){
+			throw new IllegalArgumentException("Si cerca un determinato in una posizione non"
+					+ "compresa tra 1 e 5!");
 
+		}
+		else{
+			switch(pos){
+			case 1:
+				return this.primo;
+			case 2:
+				return this.secondo;
+			case 3:
+				return this.terzo;
+			case 4:
+				return this.quarto;
+			case 5:
+				return this.quinto;
+			default:
+				return null;
+			}
+			
+		}
+
+	}
+
+	public boolean isEmpty(){
+		return this.getNumeri().isEmpty();
+	}
 }
