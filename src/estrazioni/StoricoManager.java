@@ -21,7 +21,7 @@ public class StoricoManager {
 		List<Estrazione> nuoveEstrazioni = EstrazioneFetcher.retrieveEstrazioni(newLines);
 		List<Estrazione> estrazioniNonAncoraInserite = new ArrayList<>();
 		
-		List<Estrazione> currentEstrazioni = EstrazioneController.retrieveListEstrazioni();
+		List<Estrazione> currentEstrazioni = EstrazioneController.getList();
 		for( Estrazione nuova: nuoveEstrazioni ){
 			if (!currentEstrazioni.contains(nuova) && !estrazioniNonAncoraInserite.contains(nuova) ){
 				estrazioniNonAncoraInserite.add(nuova);

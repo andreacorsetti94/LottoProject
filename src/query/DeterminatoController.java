@@ -1,4 +1,4 @@
-package estrazioni;
+package query;
 
 import helper.CollectionHelper;
 
@@ -7,25 +7,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import estrazioni.Estrazione;
 import numeri.Numero;
 import numeri.NumeroController;
 import ruote.Ruota;
 import ruote.RuotaID;
 
-public class DeterminatoController {
-
-	private List<Estrazione> storico;
+public class DeterminatoController extends AbstractOrderedController{
 
 	public DeterminatoController(List<Estrazione> estrazioni){
-		super();
-		this.storico = EstrazioneController.sortFromRecent(estrazioni);
+		super(estrazioni);
 	}
 
 	public int ritardoMassimoDetRuota(Numero numero, int pos, RuotaID id){
 		int max = 0;
 		int tmp = 0;
 
-		for ( Estrazione estrazione: storico){
+		for ( Estrazione estrazione: super.getEstrazioni()){
 			Ruota ruota = estrazione.getRuota(id);
 			if ( ruota.isEmpty() ) continue;
 			if (ruota.getDeterminato(pos).equals(numero) ){
@@ -46,7 +44,7 @@ public class DeterminatoController {
 		int max = 0;
 		int tmp = 0;
 
-		for ( Estrazione estrazione: storico){
+		for ( Estrazione estrazione: super.getEstrazioni()){
 			boolean estrazioneContieneDetInPosizione = false;
 			for ( Ruota ruota: estrazione.getRuote() ){
 				if ( ruota.isEmpty() ) continue;
@@ -70,8 +68,8 @@ public class DeterminatoController {
 	public int ritardoPrecedenteDetRuota(Numero numero, int pos, RuotaID id){
 		int countEstrazioneDaCuiPartire = 0;
 
-		for ( int i = 0; i < storico.size(); i++ ){
-			Estrazione e = storico.get(i);
+		for ( int i = 0; i < super.getEstrazioni().size(); i++ ){
+			Estrazione e = super.getEstrazioni().get(i);
 			if ( e.getRuota(id).getDeterminato(pos).equals(numero) ){
 				countEstrazioneDaCuiPartire = i + 1;
 				break;
@@ -79,8 +77,8 @@ public class DeterminatoController {
 		}
 
 		int countRitardo = 0;
-		for ( int j = countEstrazioneDaCuiPartire; j < storico.size(); j++ ){
-			Estrazione e = storico.get(j);
+		for ( int j = countEstrazioneDaCuiPartire; j < super.getEstrazioni().size(); j++ ){
+			Estrazione e = super.getEstrazioni().get(j);
 			if ( e.getRuota(id).getDeterminato(pos).equals(numero) ){
 				return countRitardo;
 			}
@@ -92,8 +90,8 @@ public class DeterminatoController {
 	public int ritardoPrecedenteDetTutte(Numero numero, int pos){
 		int countEstrazioneDaCuiPartire = 0;
 
-		outer: for ( int i = 0; i < storico.size(); i++ ){
-			Estrazione e = storico.get(i);
+		outer: for ( int i = 0; i < super.getEstrazioni().size(); i++ ){
+			Estrazione e = super.getEstrazioni().get(i);
 			for ( Ruota ruota: e.getRuote() ){
 				if (ruota.getDeterminato(pos).equals(numero) && ruota.getRuota() != RuotaID.NAZIONALE ){
 					countEstrazioneDaCuiPartire = i + 1;
@@ -103,8 +101,8 @@ public class DeterminatoController {
 		}
 
 		int countRitardo = 0;
-		for ( int j = countEstrazioneDaCuiPartire; j < storico.size(); j++ ){
-			Estrazione e = storico.get(j);
+		for ( int j = countEstrazioneDaCuiPartire; j < super.getEstrazioni().size(); j++ ){
+			Estrazione e = super.getEstrazioni().get(j);
 			for ( Ruota ruota: e.getRuote() ){
 				if (ruota.getDeterminato(pos).equals(numero) ){
 					return countRitardo;
@@ -122,7 +120,7 @@ public class DeterminatoController {
 		int sommaRitardiTemporanei = 0;
 		int tmpRitardo = 0;
 
-		for ( Estrazione e: storico ){
+		for ( Estrazione e: super.getEstrazioni() ){
 			if ( e.getRuota(id).getDeterminato(pos).equals(numero) ){
 				sommaRitardiTemporanei += tmpRitardo;
 				tmpRitardo = 0;
@@ -145,7 +143,7 @@ public class DeterminatoController {
 		int sommaRitardiTemporanei = 0;
 		int tmpRitardo = 0;
 
-		for ( Estrazione e: storico ){
+		for ( Estrazione e: super.getEstrazioni() ){
 			boolean flag = false;
 			for ( Ruota ruota: e.getRuote() ){
 				if ( ruota.getDeterminato(pos).equals(numero) && ruota.getRuota() != RuotaID.NAZIONALE){
@@ -168,7 +166,7 @@ public class DeterminatoController {
 	public int ritardoDetRuota(RuotaID id, Numero numero, int pos){
 		int count = 0;
 
-		for ( Estrazione estrazione: storico){
+		for ( Estrazione estrazione: super.getEstrazioni()){
 			if (estrazione.getRuota(id).getDeterminato(pos).equals(numero) ) break;
 			count++;
 		}
@@ -178,7 +176,7 @@ public class DeterminatoController {
 	public int ritardoDetTutte(Numero numero, int pos){
 		int count = 0;
 
-		outer: for (Estrazione estrazione: storico){
+		outer: for (Estrazione estrazione: super.getEstrazioni()){
 			for ( Ruota ruota: estrazione.getRuote() ){
 				if ( ruota.isEmpty() ) continue;
 				if ( ruota.getDeterminato(pos).equals(numero) && ruota.getRuota() != RuotaID.NAZIONALE) break outer;
@@ -212,7 +210,7 @@ public class DeterminatoController {
 	public int frequenzaDetRuota(RuotaID id, Numero numero, int pos){
 		int count = 0;
 
-		for ( Estrazione estrazione: storico ){
+		for ( Estrazione estrazione: super.getEstrazioni() ){
 			Ruota ruota = estrazione.getRuota(id);
 			if ( ruota.isEmpty() ) continue;
 			if ( ruota.getDeterminato(pos).equals(numero) ) count++;
@@ -223,7 +221,7 @@ public class DeterminatoController {
 	public int freqDetTutte(Numero numero, int pos){
 		int count = 0;
 
-		for ( Estrazione estrazione: storico ){
+		for ( Estrazione estrazione: super.getEstrazioni() ){
 			for ( Ruota ruota: estrazione.getRuote() ){
 				if ( ruota.isEmpty() ) continue;
 				if ( ruota.getDeterminato(pos).equals(numero) && ruota.getRuota() != RuotaID.NAZIONALE) 
@@ -236,7 +234,7 @@ public class DeterminatoController {
 	public LinkedHashMap<Numero,Integer> piuFrequentiRuota(RuotaID id, int pos, int limit){
 		Map<Numero,Integer> numeriMap = new HashMap<>();
 
-		for( Estrazione e: storico){
+		for( Estrazione e: super.getEstrazioni()){
 			Numero numInPosizione = e.getRuota(id).getDeterminato(pos);
 			if ( numInPosizione == null )  continue;
 			Integer frequenza = numeriMap.get(numInPosizione);
@@ -254,7 +252,7 @@ public class DeterminatoController {
 	public LinkedHashMap<Numero,Integer> piuFrequentiTutte(int pos, int limit){
 		Map<Numero,Integer> numeriMap = new HashMap<>();
 
-		for( Estrazione e: storico){
+		for( Estrazione e: super.getEstrazioni()){
 			for ( Ruota r: e.getRuote() ){
 				if ( r.getRuota() == RuotaID.NAZIONALE ) continue;
 				Numero numInPosizione = r.getDeterminato(pos);

@@ -1,4 +1,4 @@
-package estrazioni;
+package query;
 
 import helper.CollectionHelper;
 
@@ -7,18 +7,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import estrazioni.Estrazione;
 import numeri.Numero;
 import numeri.NumeroController;
 import ruote.Ruota;
 import ruote.RuotaID;
 
-public class SpiaController {
-
-	private final List<Estrazione> storico;
+public class SpiaController extends AbstractController{
 
 	public SpiaController(List<Estrazione> estrazioni) {
-		super();
-		this.storico = estrazioni;
+		super(estrazioni);
 	}
 	
 	//parametri: Numero, Ruota, limite di quanti spiati mettere per ogni spia, quante estrazioni
@@ -37,11 +35,11 @@ public class SpiaController {
 	public LinkedHashMap<Numero,Integer> spiaPerNumeroRuota(RuotaID id, Numero numeroSpia, int limitSpie, int limitEstrazioni){
 		Map<Numero, Integer> spieToNumeroSpieMap = new HashMap<>();
 		
-		for (int i = 0; i < storico.size(); i++){
-			Estrazione e = storico.get(i);
+		for (int i = 0; i < super.getEstrazioni().size(); i++){
+			Estrazione e = super.getEstrazioni().get(i);
 			if ( e.getRuota(id).containsCombinazione(numeroSpia) ){
-				for ( int j = i + 1; j < i + 1 + limitEstrazioni && j < storico.size(); j++ ){
-					Estrazione succ = storico.get(j);
+				for ( int j = i + 1; j < i + 1 + limitEstrazioni && j < super.getEstrazioni().size(); j++ ){
+					Estrazione succ = super.getEstrazioni().get(j);
 					Ruota ruota = succ.getRuota(id);
 					for ( Numero spiato: ruota.getNumeri() ){
 						Integer numeroVolteSpiato = spieToNumeroSpieMap.get(spiato);

@@ -28,7 +28,7 @@ public class EstrazioneController {
 	
 	private static List<Estrazione> STORICO_ESTRAZIONI = new ArrayList<>();
 	
-	public static List<Estrazione> retrieveListEstrazioni(){
+	public static List<Estrazione> getList(){
 		return STORICO_ESTRAZIONI;
 	}
 	

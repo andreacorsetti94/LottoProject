@@ -1,4 +1,4 @@
-package estrazioni;
+package query;
 
 import helper.CollectionHelper;
 
@@ -7,25 +7,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import estrazioni.Estrazione;
 import numeri.Combinazione;
 import numeri.TipoCombinazione;
 import ruote.Ruota;
 import ruote.RuotaController;
 import ruote.RuotaID;
 
-public class FrequenzaController {
-
-	private List<Estrazione> storico;
+public class FrequenzaController extends AbstractController{
 
 	public FrequenzaController(List<Estrazione> estrazioni){
-		super();
-		this.storico = estrazioni;
+		super(estrazioni);
 	}
 
 	public int getFreqCombinazioneRuota(RuotaID id, Combinazione comb){
 		int count = 0;
 
-		for ( Estrazione estrazione: storico ){
+		for ( Estrazione estrazione: super.getEstrazioni() ){
 			Ruota ruota = estrazione.getRuota(id);
 
 			if ( ruota.containsCombinazione(comb) ) count++;
@@ -36,7 +34,7 @@ public class FrequenzaController {
 	public int getFreqCombinazioneTutte(Combinazione comb){
 		int count = 0;
 
-		for ( Estrazione estrazione: storico ){
+		for ( Estrazione estrazione: super.getEstrazioni() ){
 			for ( Ruota ruota: estrazione.getRuote() ){
 				if ( ruota.containsCombinazione(comb) && ruota.getRuota() != RuotaID.NAZIONALE) 
 					count++;
@@ -48,7 +46,7 @@ public class FrequenzaController {
 	public LinkedHashMap<Combinazione,Integer> combinazioniPiuFrequenti(RuotaID id, int limit, TipoCombinazione tipo){
 		Map<Combinazione, Integer> combMap = new HashMap<>();
 
-		for ( Estrazione e: storico ){
+		for ( Estrazione e: super.getEstrazioni() ){
 			Ruota r = e.getRuota(id);
 			List<? extends Combinazione> combInRuota = RuotaController.getPermutazioneCombinazione(r, tipo.len());
 			for ( Combinazione combinazione: combInRuota ){
@@ -68,7 +66,7 @@ public class FrequenzaController {
 	public LinkedHashMap<Combinazione,Integer> combinazioniPiuFrequentiTutte(int limit, TipoCombinazione tipo){
 		Map<Combinazione, Integer> combMap = new HashMap<>();
 
-		for ( Estrazione e: storico ){
+		for ( Estrazione e: super.getEstrazioni() ){
 			for( Ruota r: e.getRuote() ){
 				if ( r.getRuota() == RuotaID.NAZIONALE ) continue;
 				List<? extends Combinazione> combInRuota = RuotaController.getPermutazioneCombinazione(r, tipo.len());
