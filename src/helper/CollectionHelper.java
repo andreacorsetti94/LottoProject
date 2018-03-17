@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import numeri.Numero;
+
 public class CollectionHelper {
 
 	public static <K> LinkedHashMap<K,Integer> sortHashMapByIntegerValue(Map<K,Integer> mapToSort, int limit, boolean reverseOrder){
@@ -48,6 +50,14 @@ public class CollectionHelper {
 	
 	public static <T> List<T> listFromArray(T[] array){
 		return Arrays.asList(array);
+	}
+	
+	public static Numero[] listToArray(List<Numero> list){
+		Numero[] numeri = new Numero[list.size()];
+		for(int i = 0; i < list.size(); i++){
+			numeri[i] = list.get(i);
+		}
+		return numeri;
 	}
 	
 }

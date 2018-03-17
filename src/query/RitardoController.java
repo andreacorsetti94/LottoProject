@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import estrazioni.Estrazione;
 import numeri.Ambo;
 import numeri.Combinazione;
 import numeri.Numero;
@@ -17,6 +16,7 @@ import numeri.NumeroRuota;
 import ruote.Ruota;
 import ruote.RuotaController;
 import ruote.RuotaID;
+import estrazioni.Estrazione;
 
 public class RitardoController extends AbstractOrderedController{
 
@@ -309,6 +309,34 @@ public class RitardoController extends AbstractOrderedController{
 			amboMap.put(ambo,rit);
 		}
 		return CollectionHelper.sortHashMapByIntegerValue(amboMap, limit, true);
+	}
+	
+	public int ritardoAmboDaLista(RuotaID id, List<Numero> numeri){
+		List<Numero[]> ambiColl = RuotaController.permute(2, CollectionHelper.listToArray(numeri));
+		int ritardoMinimo = Integer.MAX_VALUE;
+		
+		for(Numero[] ambi: ambiColl){
+			Ambo a = new Ambo(ambi[0], ambi[1]);
+			int ritardoAmbo = this.ritardoCombinazioneRuota(id, a);
+			if ( ritardoAmbo < ritardoMinimo ){
+				ritardoMinimo = ritardoAmbo;
+			}
+		}
+		return ritardoMinimo;
+	}
+	
+	public int ritardoAmboDaListaTutte(List<Numero> numeri){
+		List<Numero[]> ambiColl = RuotaController.permute(2, CollectionHelper.listToArray(numeri));
+		int ritardoMinimo = Integer.MAX_VALUE;
+		
+		for(Numero[] ambi: ambiColl){
+			Ambo a = new Ambo(ambi[0], ambi[1]);
+			int ritardoAmbo = this.ritardoCombinazioneTutte(a);
+			if ( ritardoAmbo < ritardoMinimo ){
+				ritardoMinimo = ritardoAmbo;
+			}
+		}
+		return ritardoMinimo;
 	}
 
 }
