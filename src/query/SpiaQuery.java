@@ -13,9 +13,9 @@ import numeri.NumeroController;
 import ruote.Ruota;
 import ruote.RuotaID;
 
-public class SpiaController extends AbstractController{
+public class SpiaQuery extends AbstractQuery{
 
-	public SpiaController(List<Estrazione> estrazioni) {
+	public SpiaQuery(List<Estrazione> estrazioni) {
 		super(estrazioni);
 	}
 	

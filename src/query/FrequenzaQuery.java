@@ -14,9 +14,9 @@ import ruote.Ruota;
 import ruote.RuotaController;
 import ruote.RuotaID;
 
-public class FrequenzaController extends AbstractController{
+public class FrequenzaQuery extends AbstractQuery{
 
-	public FrequenzaController(List<Estrazione> estrazioni){
+	public FrequenzaQuery(List<Estrazione> estrazioni){
 		super(estrazioni);
 	}
 

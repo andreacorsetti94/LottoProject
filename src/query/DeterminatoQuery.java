@@ -13,9 +13,9 @@ import numeri.NumeroController;
 import ruote.Ruota;
 import ruote.RuotaID;
 
-public class DeterminatoController extends AbstractOrderedController{
+public class DeterminatoQuery extends AbstractOrderedQuery{
 
-	public DeterminatoController(List<Estrazione> estrazioni){
+	public DeterminatoQuery(List<Estrazione> estrazioni){
 		super(estrazioni);
 	}
 

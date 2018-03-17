@@ -7,15 +7,15 @@ import numeri.Combinazione;
 import numeri.Numero;
 import ruote.RuotaID;
 
-public class ConvenienzaController extends AbstractController{
+public class ConvenienzaQuery extends AbstractQuery{
 
-	public ConvenienzaController(List<Estrazione> estrazioni){
+	public ConvenienzaQuery(List<Estrazione> estrazioni){
 		super(estrazioni);
 	}
 
 	public double indiceConvenienzaCombinazioneRuota(RuotaID id, Combinazione comb){
-		RitardoController ritContr = new RitardoController(super.getEstrazioni());
-		FrequenzaController freqContr = new FrequenzaController(super.getEstrazioni());
+		RitardoQuery ritContr = new RitardoQuery(super.getEstrazioni());
+		FrequenzaQuery freqContr = new FrequenzaQuery(super.getEstrazioni());
 
 		int ritardoComb = ritContr.ritardoCombinazioneRuota(id, comb);
 		int freqComb = freqContr.getFreqCombinazioneRuota(id, comb);
@@ -31,8 +31,8 @@ public class ConvenienzaController extends AbstractController{
 	}
 
 	public double indiceConvenienzaCombinazioneTutte(Combinazione comb){
-		RitardoController ritContr = new RitardoController(super.getEstrazioni());
-		FrequenzaController freqContr = new FrequenzaController(super.getEstrazioni());
+		RitardoQuery ritContr = new RitardoQuery(super.getEstrazioni());
+		FrequenzaQuery freqContr = new FrequenzaQuery(super.getEstrazioni());
 
 		int ritardoComb = ritContr.ritardoCombinazioneTutte(comb);
 		int freqComb = freqContr.getFreqCombinazioneTutte(comb);
@@ -42,7 +42,7 @@ public class ConvenienzaController extends AbstractController{
 	}
 
 	public double indiceConvenienzaDeterminatoTutte(Numero numero, int pos){
-		DeterminatoController contr = new DeterminatoController(super.getEstrazioni());
+		DeterminatoQuery contr = new DeterminatoQuery(super.getEstrazioni());
 		int freq = contr.freqDetTutte(numero, pos);
 		int rit = contr.ritardoDetTutte(numero, pos);
 
@@ -51,7 +51,7 @@ public class ConvenienzaController extends AbstractController{
 	}
 
 	public double indiceConvenienzaDeterminatoRuota(RuotaID id, Numero numero, int pos){
-		DeterminatoController contr = new DeterminatoController(super.getEstrazioni());
+		DeterminatoQuery contr = new DeterminatoQuery(super.getEstrazioni());
 		int freq = contr.frequenzaDetRuota(id, numero, pos);
 		int rit = contr.ritardoDetRuota(id, numero, pos);
 

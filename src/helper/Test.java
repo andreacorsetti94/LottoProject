@@ -1,7 +1,6 @@
 package helper;
 import iofetch.LocalConfigurationManager;
 
-
 public class Test {
 
 	public static void main(String[] args) {

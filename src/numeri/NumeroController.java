@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import query.RitardoController;
+import query.RitardoQuery;
 import ruote.RuotaController;
 import ruote.RuotaID;
 import estrazioni.EstrazioneController;
@@ -53,7 +53,7 @@ public class NumeroController {
 
 	public static List<Ambo> generaAmbiDaCapogioco(RuotaID id){
 
-		LinkedHashMap<Numero, Integer> map = new RitardoController(EstrazioneController.getList()).
+		LinkedHashMap<Numero, Integer> map = new RitardoQuery(EstrazioneController.getList()).
 				piuRitardatariPerRuota(id, 1);
 
 		Numero capogiocoRitardatario = map.keySet().iterator().next();
@@ -441,52 +441,116 @@ public class NumeroController {
 	}
 
 	public static List<Ambo> generaAmbiVertibili(){
-		List<Ambo> ambi = new ArrayList<>();
-		for( Ambo a: generaAmbi() ){
-			if ( a.isVertibile() ) ambi.add(a);
+		if ( ambiVertibili == null ){
+			ambiVertibili = new ArrayList<>();
+			for(Numero n: NumeroController.getInsiemeNumeri()){
+				if ( n.value() <= 11 || n.value() >= 88 || n.value()%11 == 0 ) continue;
+				String numero = String.valueOf(n.value());
+				String reverseNumero = new StringBuilder(numero).reverse().toString();
+				int reverse = Integer.parseInt(reverseNumero);
+				if ( reverse <= 88 && reverse >= 11  ){
+					Ambo ambo = new Ambo(n, new Numero(reverse));
+					if ( !ambiVertibili.contains(ambo) ){
+						ambiVertibili.add(ambo);
+					}
+				}
+			}
 		}
-		return ambi;
+		return ambiVertibili;
+		
 	}
+	
+	private static List<Ambo> ambiVertibili;
 
 	public static List<Ambo> generaAmbiGemelli(){
-		List<Ambo> ambi = new ArrayList<>();
-		for( Ambo a: generaAmbi() ){
-			if ( a.isGemello() ) ambi.add(a);
+		if ( ambiGemelli == null ){
+			ambiGemelli = new ArrayList<>();
+			List<Numero> numeri = NumeroController.getInsiemeNumeri();
+			for( Numero n: numeri){
+				if ( n.value() % 11 == 0 ){
+					for ( Numero n2: numeri){
+						if ( n2.value() % 11 == 0 && !n2.equals(n) ){
+							Ambo ambo = new Ambo(n,n2);
+							if ( !ambiGemelli.contains(ambo) ){
+								ambiGemelli.add(ambo);
+							}
+						}
+					}
+				}
+			}
 		}
-		return ambi;
+		return ambiGemelli;
+
 	}
+	
+	private static List<Ambo> ambiGemelli;
 
 	public static List<Ambo> generaAmbiSimmetrici(){
-		List<Ambo> ambi = new ArrayList<>();
-		for( Ambo a: generaAmbi() ){
-			if ( a.isSimmetrico()) ambi.add(a);
+		if ( ambiSimmetrici == null ){
+			ambiSimmetrici = new ArrayList<>();
+			for(Numero n: NumeroController.getInsiemeNumeri() ){
+				int simmetrico = 91 - n.value();
+				if ( simmetrico <= 90 && simmetrico >= 1 && simmetrico != n.value()){
+					Ambo ambo = new Ambo(n, new Numero(simmetrico));
+					if ( !ambiSimmetrici.contains(ambo) ){
+						ambiSimmetrici.add(ambo);
+					}
+				}
+			}
 		}
-		return ambi;
+		return ambiSimmetrici;
 	}
+	
+	private static List<Ambo> ambiSimmetrici;
 
 	public static List<Ambo> generaAmbiDivisoreComune(){
-		List<Ambo> ambi = new ArrayList<>();
-		for( Ambo a: generaAmbi() ){
-			if ( a.aDivisorComune() ) ambi.add(a);
+		if ( ambiDivisorComune == null ){
+			ambiDivisorComune = new ArrayList<>();
+			for(Numero n: NumeroController.getInsiemeNumeri()){
+				int altro = n.value() + 45;
+				if ( altro <= 90 ){
+					Ambo ambo = new Ambo(n, new Numero(altro));
+					if ( !ambiDivisorComune.contains(ambo) ){
+						ambiDivisorComune.add(ambo);
+					}
+				}
+			}
 		}
-		return ambi;
+		return ambiDivisorComune;
 	}
 
+	private static List<Ambo> ambiDivisorComune;
+	
 	public static List<Ambo> generaAmbiComplementari(){
-		List<Ambo> ambi = new ArrayList<>();
-		for( Ambo a: generaAmbi() ){
-			if ( a.isComplementare() ) ambi.add(a);
+		if ( ambiComplementari == null ){
+			ambiComplementari = new ArrayList<>();
+			for(Numero n: NumeroController.getInsiemeNumeri()){
+				int altro = 90 - n.value();
+				if ( altro >= 1 && altro <= 90 && altro != n.value() ){
+					Ambo ambo = new Ambo(n, new Numero(altro));
+					if ( !ambiComplementari.contains(ambo) ){
+						ambiComplementari.add(ambo);
+					}
+				}
+			}
 		}
-		return ambi;
+		return ambiComplementari;
 	}
+	
+	private static List<Ambo> ambiComplementari;
 
 	public static List<Ambo> generaAmbiConsecutivi(){
-		List<Ambo> ambi = new ArrayList<>();
-		for( Ambo a: generaAmbi() ){
-			if ( a.isConsecutivo() ) ambi.add(a);
+		
+		if ( ambiConsecutivi == null ){
+			ambiConsecutivi = new ArrayList<>();
+			for(int i = 1; i <= 89; i++){
+				ambiConsecutivi.add(new Ambo(i,i+1));
+			}
 		}
-		return ambi;
+		
+		return ambiConsecutivi;
 	}
+	private static List<Ambo> ambiConsecutivi;
 
 	public static boolean isTerzinaDispari(Numero... numeri){
 		if ( numeri.length != 3) return false;

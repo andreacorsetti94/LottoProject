@@ -5,9 +5,9 @@ import java.util.List;
 import estrazioni.Estrazione;
 import estrazioni.EstrazioneController;
 
-public abstract class AbstractOrderedController extends AbstractController {
+public abstract class AbstractOrderedQuery extends AbstractQuery {
 
-	protected AbstractOrderedController(List<Estrazione> estrazioni) {
+	protected AbstractOrderedQuery(List<Estrazione> estrazioni) {
 		super(EstrazioneController.sortFromRecent(estrazioni));
 	}
 	

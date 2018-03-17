@@ -18,9 +18,9 @@ import ruote.RuotaController;
 import ruote.RuotaID;
 import estrazioni.Estrazione;
 
-public class RitardoController extends AbstractOrderedController{
+public class RitardoQuery extends AbstractOrderedQuery{
 
-	public RitardoController(List<Estrazione> estrazioni) {
+	public RitardoQuery(List<Estrazione> estrazioni) {
 		super(estrazioni);
 	}
 	
@@ -291,6 +291,49 @@ public class RitardoController extends AbstractOrderedController{
 		Map<Ambo,Integer> amboMap = new HashMap<>();
 		for ( Ambo ambo: NumeroController.generaAmbi() ){
 			int rit = ritardoCombinazioneRuota(id, ambo);
+			amboMap.put(ambo,rit);
+		}
+		return CollectionHelper.sortHashMapByIntegerValue(amboMap, limit, true);
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	public LinkedHashMap<Ambo, Integer> ambiPiuRitardatariTutte(int limit){
+		
+		Map<Ambo,Integer> amboMap = new HashMap<>();
+		int i = 0;
+		
+		while(amboMap.size() <= 4005 && i < super.getEstrazioni().size() ){
+			Estrazione estrazione = super.getEstrazioni().get(i);
+			for(Ruota ruota: estrazione.getRuote()){
+				if ( ruota.getRuota() == RuotaID.NAZIONALE) continue;
+				List<Ambo> ambiInRuota = (List<Ambo>) RuotaController.getPermutazioneCombinazione(ruota, 2);
+
+				for ( Ambo ambo: ambiInRuota ){
+					Integer ritardo = amboMap.get(ambo);
+					if ( ritardo == null ){
+						amboMap.put(ambo, i);
+					}
+				}
+			}
+			i++;
+
+		}
+		
+		for ( Ambo ambo: NumeroController.generaAmbi() ){
+			if ( amboMap.get(ambo) == null ){
+				amboMap.put(ambo, super.getEstrazioni().size());
+			}
+		}
+
+		return CollectionHelper.sortHashMapByIntegerValue(amboMap, limit, true);
+
+	}
+	
+	public LinkedHashMap<Ambo, Integer> ambiPiuRitardatariTutteBis(int limit){
+		Map<Ambo,Integer> amboMap = new HashMap<>();
+		for ( Ambo ambo: NumeroController.generaAmbi() ){
+			int rit = ritardoCombinazioneTutte(ambo);
 			amboMap.put(ambo,rit);
 		}
 		return CollectionHelper.sortHashMapByIntegerValue(amboMap, limit, true);

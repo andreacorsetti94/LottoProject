@@ -4,7 +4,7 @@ import java.util.List;
 
 import estrazioni.Estrazione;
 
-public abstract class AbstractController {
+public abstract class AbstractQuery {
 
 	private List<Estrazione> estrazioni;
 	
@@ -12,7 +12,7 @@ public abstract class AbstractController {
 		return this.estrazioni;
 	}
 	
-	protected AbstractController(List<Estrazione> estrazioni){
+	protected AbstractQuery(List<Estrazione> estrazioni){
 		this.estrazioni = estrazioni;
 	}
 	
