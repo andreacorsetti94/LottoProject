@@ -36,11 +36,6 @@ public class LocalConfigurationManager {
 
 	}
 	
-	public static void downloadAndExtractStorico(){
-		Connector.downloadStorico("cane.txt");
-		Unzipper.unzip("cane.txt", "/"); //puts in resources
-	}
-	
 	public static void updateStorico(){
 		boolean resultOk = Connector.downloadStorico(TMP_STORICO_ZIP);
 		
@@ -48,6 +43,8 @@ public class LocalConfigurationManager {
 			Unzipper.unzip(TMP_STORICO_ZIP, "/"); //puts in resources
 
 			List<String> newLines = FileManager.fetchLastLines(TMP_STORICO_FILE);
+			for(String line: newLines) System.out.println(line);
+			
 			StoricoManager.updateEstrazioni(newLines);
 			FileManager.appendLinesToFile(newLines, LOCAL_STORICO_FILE);
 			FileManager.deleteFile(TMP_STORICO_FILE);
@@ -56,9 +53,5 @@ public class LocalConfigurationManager {
 
 		}
 				
-	}
-	
-	public static void deleteFile(String filePath){
-		FileManager.deleteFile(filePath);
 	}
 }

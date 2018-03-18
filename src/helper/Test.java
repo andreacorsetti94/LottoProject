@@ -4,7 +4,7 @@ import iofetch.LocalConfigurationManager;
 public class Test {
 
 	public static void main(String[] args) {
-
+		LocalConfigurationManager.updateStorico();
 	}
 
 	public static boolean isDevMode(){

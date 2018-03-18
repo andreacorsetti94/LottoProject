@@ -48,15 +48,22 @@ class FileManager {
 
 	}
 	
+	/**
+	 * Calcola quali sono le ultime righe di un file da aggiungere e le ritorna nell'ordine
+	 * corretto.
+	 * @param path
+	 * @return
+	 */
 	static List<String> fetchLastLines(String path){
 		
 		List<String> tmpList = new ArrayList<>();
 		List<String> storicoList = StoricoManager.getStoricoLines();
 		
 		String lastStoricoLine = null;
-
+		String lastStoricoLineDate = null;
 		if ( !storicoList.isEmpty() ){
 			lastStoricoLine = storicoList.get(storicoList.size() - 1);
+			lastStoricoLineDate = lastStoricoLine.split("\\s+")[0];
 		}
 		
 		URI uri = FileManager.retrieveURI(path);
@@ -64,25 +71,43 @@ class FileManager {
 
 		try (Stream<String> stream = Files.lines(Paths.get(uri))) {
 			
+			//linee del file completo, che contengono le nuove estrazioni
 			List<String> streamToList = stream
 								.sorted(Comparator.reverseOrder())
 								.collect(Collectors.toList());
 			
 			for (String line: streamToList ){
-				if ( !line.equals(lastStoricoLine) ){
+				if ( !line.startsWith(lastStoricoLineDate) ){
 					tmpList.add(line);
 				}
 				else{
 					break;
 				}
 			}
-			return tmpList;
+			
+			return ordinaLineeInBaseAllaData(tmpList);
+			
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
 		
 		return Collections.emptyList();
 
+	}
+	
+	/**
+	 * Essendo le linee in input ordinate in base alla lettura dal file, esse sono dalla piu
+	 * recente alla piu vecchia, e non posso aggiungerle al mio file storico in questo ordine.
+	 * Quindi le riordino dalla più vecchia alla piu recente e le aggiungo in questo ordine.
+	 * @param linee
+	 * @return
+	 */
+	private static List<String> ordinaLineeInBaseAllaData(List<String> linee){
+		List<String> lineeOrdinateDallaPiuAnticaAllaPiuRecente = new ArrayList<>();
+		for(int i = linee.size() - 1; i >= 0; i--){
+			lineeOrdinateDallaPiuAnticaAllaPiuRecente.add(linee.get(i));
+		}
+		return lineeOrdinateDallaPiuAnticaAllaPiuRecente;
 	}
 	
 	static void deleteFile(String filePath){
@@ -186,6 +211,11 @@ class FileManager {
 
 	}
 	
+	/**
+	 * Appende delle linee alla fine di un file
+	 * @param lines
+	 * @param filePath
+	 */
 	static void appendLinesToFile(List<String> lines, String filePath){
 		
 		try{
