@@ -36,9 +36,9 @@ public class Quaterna extends Combinazione {
 	@Override
 	protected List<Numero> populateValori(Numero... numeri) {
 		this.primo = numeri[0];
-		this.primo = numeri[1];
-		this.primo = numeri[2];
-		this.primo = numeri[3];
+		this.secondo = numeri[1];
+		this.terzo = numeri[2];
+		this.quarto = numeri[3];
 		
 		List<Numero> valori = new ArrayList<>();
 		valori.add(this.primo);

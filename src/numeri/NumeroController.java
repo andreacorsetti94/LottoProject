@@ -503,6 +503,10 @@ public class NumeroController {
 	
 	private static List<Ambo> ambiSimmetrici;
 
+	/**
+	 * Divisor comune == diametrali
+	 * @return
+	 */
 	public static List<Ambo> generaAmbiDivisoreComune(){
 		if ( ambiDivisorComune == null ){
 			ambiDivisorComune = new ArrayList<>();
@@ -551,6 +555,52 @@ public class NumeroController {
 		return ambiConsecutivi;
 	}
 	private static List<Ambo> ambiConsecutivi;
+	
+	
+	public static List<Ambo> getAmbiBiunivoci(){
+		if ( ambiBiunivoci == null ){
+			ambiBiunivoci = new ArrayList<>();
+			for(int i = 1; i <= 45; i++){
+				ambiBiunivoci.add(new Ambo(i,i*2));
+			}
+		}
+		return ambiBiunivoci;
+	}
+	
+	private static List<Ambo> ambiBiunivoci;
+	
+	public static List<Ambo> getAmbiQuadratici(){
+		if ( ambiQuadratici == null ){
+			ambiQuadratici = new ArrayList<>();
+			for(int i = 1; i <= 90; i++){
+				for ( int j = 1; j <= 90; j++ ){
+					if ( i == j) continue;
+					if ( Math.sqrt(i) % 1 == 0 && Math.sqrt(j) % 1 == 0){
+						Ambo ambo = new Ambo(i,j);
+						if ( !ambiQuadratici.contains(ambo) ){
+							ambiQuadratici.add(ambo);
+						}
+					}
+				}
+				
+			}
+		}
+		return ambiQuadratici;
+	}
+	
+	private static List<Ambo> ambiQuadratici;
+	
+	public static List<Ambo> getAmbiTriplicati(){
+		if ( ambiTriplicati == null ){
+			ambiTriplicati = new ArrayList<>();
+			for(int i = 1; i <= 30; i++){
+				ambiTriplicati.add(new Ambo(i, i*3));
+			}
+		}
+		return ambiTriplicati;
+	}
+	
+	private static List<Ambo> ambiTriplicati;
 
 	public static boolean isTerzinaDispari(Numero... numeri){
 		if ( numeri.length != 3) return false;
